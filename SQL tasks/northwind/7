@@ -2,16 +2,15 @@ DROP TABLE IF EXISTS exam;
 
 --1
 CREATE TABLE exam (
-	exam_id serial,
+	exam_id serial UNIQUE NOT NULL,
 	exam_name varchar(32),
 	exam_date date,
-	
-	CONSTRAINT PK_id PRIMARY KEY (exam_id)
+
 );
 
 --2
 ALTER TABLE exam
-DROP CONSTRAINT PK_id
+DROP CONSTRAINT exam_exam_id_key
 
 --3
 ALTER TABLE exam
