@@ -1,1 +1,46 @@
 
+
+--1
+CREATE OR REPLACE FUNCTION
+back_up_for_customers() RETURNS void AS $$
+	DROP VIEW IF EXISTS customers_back_up;
+	CREATE VIEW customers_back_up AS
+	SELECT *
+	FROM customers
+$$ LANGUAGE SQL
+
+SELECT back_up_for_customers();
+
+--2
+CREATE OR REPLACE FUNCTION
+get_average_orders_freigt() RETURNS double precision AS $$
+	SELECT AVG(freight)
+	FROM orders
+$$ LANGUAGE SQL
+
+SELECT get_average_orders_freigt();
+
+--3
+DROP FUNCTION IF EXISTS get_random_number(integer,integer);
+CREATE OR REPLACE FUNCTION
+get_random_number(IN min_value int, IN max_value int) RETURNS double precision AS $$
+	SELECT floor(random()*(max_value-min_value+1)) + min_value
+$$ LANGUAGE SQL;
+
+SELECT get_random_number(1,10)
+
+--4
+DROP FUNCTION IF EXISTS get_max_and_min_employees_salary_by_city();
+CREATE OR REPLACE FUNCTION
+get_max_and_min_employees_salary_by_city(OUT min_value numeric, 
+										 OUT max_value numeric, 
+										 IN transmitted_city varchar) AS $$
+	SELECT  MAX(salary), MIN(salary)
+	FROM employees
+	WHERE city = transmitted_city
+$$ LANGUAGE SQL;
+
+SELECT * FROM get_max_and_min_employees_salary_by_city('London');
+
+--5
+update where
