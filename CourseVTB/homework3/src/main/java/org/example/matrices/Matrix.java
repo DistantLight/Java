@@ -1,5 +1,4 @@
 package org.example.matrices;
-
 import org.example.exceptions.MyArrayDataException;
 import org.example.exceptions.MyArraySizeException;
 
@@ -8,11 +7,11 @@ public class Matrix {
 
     public static int getSumOfElements(String[][] matrix) throws MyArrayDataException, MyArraySizeException{
         if(matrix.length != SIZE){
-            throw new MyArraySizeException();
+            throw new MyArraySizeException(SIZE);
         }
         for (int i = 0; i < SIZE; i++) {
             if(matrix[i].length != SIZE){
-                throw new MyArraySizeException();
+                throw new MyArraySizeException(SIZE);
             }
         }
 
@@ -22,7 +21,7 @@ public class Matrix {
                 try {
                     sum += Integer.parseInt(matrix[i][j]);
                 } catch (NumberFormatException e){
-                    throw new MyArrayDataException();
+                    throw new MyArrayDataException(i + 1, j + 1);
                 }
             }
         }
@@ -36,10 +35,8 @@ public class Matrix {
                 {"1","1","1","1"}};
         try {
             System.out.println(getSumOfElements(matrix));
-        } catch (MyArraySizeException e){
-            System.out.println("Неправильный размер массива");
-        } catch (MyArrayDataException e){
-            System.out.println("Неверные данные");
+        } catch (MyArraySizeException | MyArrayDataException e){
+            System.out.println(e.getMessage());
         }
     }
 }
