@@ -9,4 +9,4 @@ MyArraySizeException.
 MyArrayDataException с детализацией, в какой именно ячейке лежат неверные данные. Расчет
 данных для этой матрицы прекращается.
 4. В методе main() нужно вызвать полученный метод, обработать возможные исключения
-MySizeArrayException и MyArrayDataException и вывести результат расчёта.
+MySizeArrayException и MyArrayDataException и вывести результат расчёта.  
