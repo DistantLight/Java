@@ -9,52 +9,41 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class TableHandler {
-    private HashMap<String, String> columns;
 
     public TableHandler() {
-        columns = new HashMap<>();
+
     }
 
     public boolean createTable(Class classObject, DataBaseConnection dataBaseConnection) throws SQLException, InstantiationException, IllegalAccessException {
         if (!classObject.isAnnotationPresent(Table.class)){
-            return false;
+            throw new RuntimeException("@Table missed");
         }
 
-        var declaredFields = classObject.getDeclaredFields();
-        String columnDataType;
-        String columnName;
-        for (Field field: declaredFields) {
-            if (field.isAnnotationPresent(Column.class)){
-                if (field.getType().equals(String.class)) {
-                    columnDataType = "TEXT";
-                } else if (field.getType().equals(int.class)) {
-                    columnDataType = "INTEGER";
-                } else if (field.getType().equals(boolean.class)) {
-                    columnDataType = "BOOLEAN";
-                } else {
-                    return false;
-                }
-                columnName = field.getAnnotation(Column.class).name();
-                if(columnName.equals("")){
-                    columnName = field.getName();
-                }
-                columns.put(columnName, columnDataType);
-                }
-        }
+        Map<Class, String> dataTypeToSting = new HashMap<>();
+        dataTypeToSting.put(int.class, "INTEGER");
+        dataTypeToSting.put(String.class, "TEXT");
 
-        var tableTitle = classObject.newInstance().getClass().getAnnotation(Table.class).title();
+        var sqlQuery = new StringBuilder("CREATE TABLE ");
+        var tableTitle = ((Table)classObject.getAnnotation(Table.class)).title();
         if(tableTitle.equals("")){
             tableTitle = classObject.getSimpleName();
         }
-        String sql = "CREATE TABLE IF NOT EXISTS " + tableTitle + "(";
-        for (Map.Entry<String, String> entry : columns.entrySet()) {
-            sql += entry.getKey() + " " + entry.getValue() + ",";
+        sqlQuery.append(tableTitle);
+        sqlQuery.append(" (");
+        var declaredFields = classObject.getDeclaredFields();
+        for(Field field: declaredFields){
+            if(field.isAnnotationPresent(Column.class)) {
+                sqlQuery.append(field.getName())
+                        .append(" ")
+                        .append(dataTypeToSting.get(field.getType()))
+                        .append(", ");
+            }
         }
-        sql = sql.substring(0, sql.length() - 1);
-        sql += ");";
+        sqlQuery.setLength(sqlQuery.length() - 2);
+        sqlQuery.append(");");
 
         dataBaseConnection.connect();
-        dataBaseConnection.getStatement().executeUpdate(sql);
+        dataBaseConnection.getStatement().executeUpdate(sqlQuery.toString());
         dataBaseConnection.disconnect();
         return true;
     }
