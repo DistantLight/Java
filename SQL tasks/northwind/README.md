@@ -1,5 +1,6 @@
 Решение задач с курса по SQL.
-Файл с созданием и заполнением учебной БД.
+
+[Файл с созданием и заполнением учебной БД.](https://github.com/DistantLight/Java/blob/main/SQL%20tasks/northwind/northwind.sql)
 
 [1)Простые выборки через SELECT](https://github.com/DistantLight/Java/blob/main/SQL%20tasks/northwind/1.sql)
   1. Выбрать все данные из таблицы customers
