@@ -1,5 +1,3 @@
---Создать функцию, которая вычисляет средний фрахт по заданным странам (функция принимает список стран). 
-
 
 DROP FUNCTION IF EXISTS get_avg_freight_by_country(text[]);
 CREATE OR REPLACE FUNCTION get_avg_freight_by_country 
