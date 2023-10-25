@@ -17,15 +17,3 @@
 8)Stream api
 
 9)hibernate
-
-10)Spring Core
-
-11)Spring Boot
-
-12)Spring MVC
-
-13)Spring Data
-
-14)Spring Security
-
-15)Spring AOP
